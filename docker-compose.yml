@@ -24,8 +24,8 @@ services:
     extra_hosts:
       - "logstash:$LOGSTASH_IP"
     environment:
-      LOGSTASH_HOST: $LOGSTASH_HOST
-      LOGSTASH_PORT: $LOGSTASH_PORT
+      LOGSTASH_HOST: ${LOGSTASH_HOST:-logstash}
+      LOGSTASH_PORT: ${LOGSTASH_PORT:-5044}
     volumes:
       - "./conf/heartbeat/heartbeat.yml:/heartbeat.yml:rw"
       - "./conf/heartbeat/modules.d:/modules.d-tmp:rw"
@@ -41,8 +41,8 @@ services:
     extra_hosts:
       - "logstash:$LOGSTASH_IP"
     environment:
-      LOGSTASH_HOST: $LOGSTASH_HOST
-      LOGSTASH_PORT: $LOGSTASH_PORT
+      LOGSTASH_HOST: ${LOGSTASH_HOST:-logstash}
+      LOGSTASH_PORT: ${LOGSTASH_PORT:-5044}
     volumes:
       - "./conf/metricbeat/metricbeat.yml:/metricbeat.yml:rw"
       - "./conf/metricbeat/modules.d:/modules.d:rw"
@@ -66,8 +66,8 @@ services:
     extra_hosts:
       - "logstash:$LOGSTASH_IP"
     environment:
-      LOGSTASH_HOST: $LOGSTASH_HOST
-      LOGSTASH_PORT: $LOGSTASH_PORT
+      LOGSTASH_HOST: ${LOGSTASH_HOST:-logstash}
+      LOGSTASH_PORT: ${LOGSTASH_PORT:-5044}
     volumes:
      - "./conf/filebeat/filebeat.yml:/filebeat.yml:rw"
      - './data/filebeat/:/data/:rw'
