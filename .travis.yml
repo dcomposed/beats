@@ -18,6 +18,7 @@ script:
   - echo "adapt heartbeat-example.yml"
   - cp conf/heartbeat/heartbeat-example.yml conf/heartbeat/heartbeat.yml
   - sudo chown -R root:root conf
+  - sudo chmod -R go-w  conf
   - echo "Build local images"
   - docker-compose build
   - docker images
