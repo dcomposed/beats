@@ -1,0 +1,10 @@
+name: yourservername
+
+heartbeat.monitors:
+- type: http
+  schedule: '@every 20s'
+  urls: ["https://github.com/"]
+  check.response.status: 200
+  tags: ["github"]
+  fields:
+    servername: github

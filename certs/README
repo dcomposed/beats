@@ -1,0 +1,4 @@
+the config files are looking for three certs in this folder:
+reporter.crt
+reporter-ca.crt
+reporter.key
