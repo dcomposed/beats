@@ -1,4 +1,2 @@
 *.crt
 *.key
-certs/*.crt
-private/*.key

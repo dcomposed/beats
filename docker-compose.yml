@@ -3,8 +3,16 @@ version: '3.1'
 # BEAT_VERSION=6.0.0-rc1
 # also optional:
 # LOGSTASH_IP=127.0.0.1 # mapped to -> logstash via extra_hosts:
-# LOGSTASH_HOST=monitor.1zm.in # passed in to services and reffed in yml
+# LOGSTASH_HOST=monitor.your.tld # passed in to services and reffed in yml
 # LOGSTASH_PORT=5044 # passed in to services and reffed in yml
+#
+# You need 3 steps to get up and running
+# 1) clone the repo
+# 2) rename .env-example to .env  and customize to your setup
+# 3) place your certificates into the certs folder
+# then you can start all services by running:
+# docker-compose up -d
+########################
 services:
   heartbeat:
     build:

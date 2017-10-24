@@ -12,13 +12,13 @@ output:
       # extra_hosts:
       #  - "logstash:$LOGSTASH_IP"
       # IF ENV vars are set via docker-compose they will be used
-      - ${LOGSTASH_HOST:logstash}:${LOGSTASH_PORT:5044}
+      - ${LOGSTASH_HOST:-logstash}:${LOGSTASH_PORT:-5044}
     ssl:
-      key: /host/certs/reporter.1zm.in.key
-      certificate: /host/certs/reporter.1zm.in.crt
+      key: /host/certs/reporter.key
+      certificate: /host/certs/reporter.crt
       certificate_authorities:
       #  - /host/certs/logstash-beats.crt
-        - /host/certs/reporter.1zm.in-ca.crt
+        - /host/certs/reporter-ca.crt
     timeout: 360
 
 filebeat:
