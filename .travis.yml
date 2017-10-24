@@ -13,6 +13,8 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
+  - echo "adapt .env-example"
+  - cp .env-example .env 
   - echo "Build local images"
   - docker-compose build
   - docker images
