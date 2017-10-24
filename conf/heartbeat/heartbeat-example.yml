@@ -6,5 +6,24 @@ heartbeat.monitors:
   urls: ["https://github.com/"]
   check.response.status: 200
   tags: ["github"]
+  #username: incase
+  #password: youneed
   fields:
     servername: github
+
+
+
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["${LOGSTASH_HOST:logstash}:${LOGSTASH_PORT:5044}"]
+
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+  ssl.certificate_authorities: ["/host/certs/reporter.crt"]
+
+  # Certificate for SSL client authentication
+  ssl.certificate: "/host/certs/reporter.crt"
+
+  # Client Certificate Key
+  ssl.key: "/host/certs/reporter.key"
