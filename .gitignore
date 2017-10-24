@@ -1,0 +1,6 @@
+storage/*
+data/*
+.env
+
+!.keep
+!.gitignore

@@ -1,0 +1,14 @@
+- module: docker
+  metricsets: ["cpu", "memory"]
+  hosts: ["unix:///hostfs/var/run/docker.sock"]
+  period: 5s
+- module: docker
+  metricsets: ["container", "diskio", "healthcheck", "info", "network"]
+  hosts: ["unix:///hostfs/var/run/docker.sock"]
+  period: 20s
+
+  # To connect to Docker over TLS you must specify a client and CA certificate.
+  #ssl:
+    #certificate_authority: "/etc/pki/root/ca.pem"
+    #certificate:           "/etc/pki/client/cert.pem"
+    #key:                   "/etc/pki/client/cert.key"

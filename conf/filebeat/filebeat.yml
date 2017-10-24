@@ -1,0 +1,59 @@
+name: playground
+fields_under_root: true
+fields:
+  name: playground
+
+output:
+  logstash:
+    enabled: true
+    hosts:
+      # this setting defaults to logstash:5044
+      # logstash is expected to be defined via docker:
+      # extra_hosts:
+      #  - "logstash:$LOGSTASH_IP"
+      # IF ENV vars are set via docker-compose they will be used
+      - ${LOGSTASH_HOST:logstash}:${LOGSTASH_PORT:5044}
+    ssl:
+      key: /host/certs/reporter.1zm.in.key
+      certificate: /host/certs/reporter.1zm.in.crt
+      certificate_authorities:
+      #  - /host/certs/logstash-beats.crt
+        - /host/certs/reporter.1zm.in-ca.crt
+    timeout: 360
+
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /host/var/log/faillog
+      document_type: syslog
+      fields_under_root: true
+      fields:
+        type: faillog
+    -
+      paths:
+        - /host/var/log/syslog
+      document_type: syslog
+      fields_under_root: true
+      fields:
+        type: syslog
+    -
+      paths:
+        - /host/var/log/auth.log
+      document_type: syslog
+      fields_under_root: true
+      fields:
+        type: authlog
+    -
+      paths:
+        - "/host/srv/nginx-reverse-proxy/logs/access.log"
+      fields_under_root: true
+      fields:
+        #document_type: nginx-access
+        type: nginx-access
+    -
+      paths:
+        - "/host/srv/nginx-reverse-proxy/logs/error.log"
+      fields_under_root: true
+      fields:
+        type: nginx-error

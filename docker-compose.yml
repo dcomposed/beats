@@ -1,0 +1,69 @@
+version: '3.1'
+# requires .env file with:
+# BEAT_VERSION=6.0.0-rc1
+# also optional:
+# LOGSTASH_IP=127.0.0.1 # mapped to -> logstash via extra_hosts:
+# LOGSTASH_HOST=monitor.1zm.in # passed in to services and reffed in yml
+# LOGSTASH_PORT=5044 # passed in to services and reffed in yml
+services:
+  heartbeat:
+    build:
+      context: ./docker-heartbeat
+      args:
+        BEAT_VERSION: $BEAT_VERSION
+    image: heartbeat:$BEAT_VERSION
+    container_name: heartbeat
+    extra_hosts:
+      - "logstash:$LOGSTASH_IP"
+    environment:
+      LOGSTASH_HOST: $LOGSTASH_HOST
+      LOGSTASH_PORT: $LOGSTASH_PORT
+    volumes:
+      - "./conf/heartbeat/heartbeat.yml:/heartbeat.yml:rw"
+      - "./conf/heartbeat/modules.d:/modules.d-tmp:rw"
+      - './certs/:/host/certs/'
+
+  metricbeat:
+    build:
+      context: ./docker-metricbeat
+      args:
+        BEAT_VERSION: $BEAT_VERSION
+    image: metricbeat:$BEAT_VERSION
+    container_name: metricbeat
+    extra_hosts:
+      - "logstash:$LOGSTASH_IP"
+    environment:
+      LOGSTASH_HOST: $LOGSTASH_HOST
+      LOGSTASH_PORT: $LOGSTASH_PORT
+    volumes:
+      - "./conf/metricbeat/metricbeat.yml:/metricbeat.yml:rw"
+      - "./conf/metricbeat/modules.d:/modules.d:rw"
+      - './certs/:/host/certs/'
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /var/run/docker.sock:/hostfs/var/run/docker.sock
+      # - /:/hostfs:ro
+    #network: host
+
+
+  filebeat:
+    build:
+      context: ./docker-filebeat
+      args:
+        BEAT_VERSION: $BEAT_VERSION
+    image: filebeat:$BEAT_VERSION
+    container_name: filebeat
+    # the following lines show multiple levels or ENV overwriting
+    # .env file -> docker-compose.yml -> filebeat.yml
+    extra_hosts:
+      - "logstash:$LOGSTASH_IP"
+    environment:
+      LOGSTASH_HOST: $LOGSTASH_HOST
+      LOGSTASH_PORT: $LOGSTASH_PORT
+    volumes:
+     - "./conf/filebeat/filebeat.yml:/filebeat.yml:rw"
+     - './data/filebeat/:/data/:rw'
+     - './certs/:/host/certs/'
+     - '/etc/:/host/etc/:ro'
+     - '/var/:/host/var/:ro'
+     - '/srv/nginx-reverse-proxy/logs/:/host/srv/nginx-reverse-proxy/logs/:ro'

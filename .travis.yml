@@ -1,0 +1,27 @@
+sudo: required
+services:
+  - docker
+env:
+  - DOCKER_COMPOSE_VERSION=1.16.1
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+script:
+  - echo "Build local images"
+  - docker-compose build
+  - docker images
+  - echo "Run local stack"
+  - docker-compose up -d
+  - docker ps -a
+  - docker-compose logs
+  # - echo "Testing public image on Docker Hub"
+  # - docker run -d --name nguoianphu-filebeat nguoianphu/docker-filebeat
+  # - docker ps -a
+  # - docker logs nguoianphu-filebeat
+  # - docker images
