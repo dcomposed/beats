@@ -14,7 +14,9 @@ before_install:
 
 script:
   - echo "adapt .env-example"
-  - cp .env-example .env 
+  - cp .env-example .env
+  - echo "adapt heartbeat-example.yml"
+  - cp conf/heartbeat/heartbeat-example.yml conf/heartbeat/heartbeat.yml
   - echo "Build local images"
   - docker-compose build
   - docker images
