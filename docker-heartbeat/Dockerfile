@@ -19,18 +19,18 @@ MAINTAINER gotjoshua <me@1m.in>
 
 ARG BEAT_VERSION=5.6.3
 #note: can be trumped from docker-compose:
-ENV BEAT_VERSION=$BEAT_VERSION  
+ENV BEAT_VERSION=$BEAT_VERSION
 
 RUN set -x \
  && apk add --update bash \
                      curl \
                      tar \
                      openssl \
- && apk --no-cache add ca-certificates \
- && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
- && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk \
- && apk add glibc-2.23-r3.apk \
- && rm glibc-2.23-r3.apk
+ && apk update && apk --no-cache add ca-certificates wget && update-ca-certificates \
+ && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+ && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk \
+ && apk add glibc-2.28-r0.apk \
+ && rm glibc-2.28-r0.apk
 
 RUN curl -L -O https://artifacts.elastic.co/downloads/beats/heartbeat/heartbeat-${BEAT_VERSION}-linux-x86_64.tar.gz \
  && tar xzvf heartbeat-${BEAT_VERSION}-linux-x86_64.tar.gz -C / --strip-components=1 \

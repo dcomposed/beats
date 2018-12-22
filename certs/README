@@ -2,3 +2,6 @@ the config files are looking for three certs in this folder:
 reporter.crt
 reporter-ca.crt
 reporter.key
+
+note: one can use plesk's lets encrypt plugin
+and then copy paste the certs from the cert section

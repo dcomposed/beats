@@ -33,8 +33,12 @@ filebeat:
     -
       paths:
         - /host/var/log/syslog
+        - /host/var/log/dmesg
+        - /host/var/log/messages
+        - /host/var/log/kern.log
       document_type: syslog
       fields_under_root: true
+      exclude_lines: ['*AE_AML_BUFFER_LIMIT*','*Buffer of length 66*']
       fields:
         type: syslog
     -
