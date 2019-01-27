@@ -1,4 +1,4 @@
-version: '2.2'
+version: "2.3"
 # requires .env file with:
 # BEAT_VERSION=6.0.0-rc1
 # also optional:
@@ -30,11 +30,14 @@ services:
     volumes:
       - "./conf/heartbeat/heartbeat.yml:/heartbeat.yml:rw"
       - "./conf/heartbeat/modules.d:/modules.d-tmp:rw"
-      - './certs/:/host/certs/'
+      - "./certs/:/host/certs/"
     mem_limit: 500m
     memswap_limit: 1g
     cpu_count: 1
     cpu_percent: 50
+    logging:
+      options:
+        max-size: 50m
 
   metricbeat:
     restart: unless-stopped
@@ -52,7 +55,7 @@ services:
     volumes:
       - "./conf/metricbeat/metricbeat.yml:/metricbeat.yml:rw"
       - "./conf/metricbeat/modules.d:/modules.d:rw"
-      - './certs/:/host/certs/'
+      - "./certs/:/host/certs/"
       - /proc:/hostfs/proc:ro
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
       - /var/run/docker.sock:/hostfs/var/run/docker.sock
@@ -62,6 +65,9 @@ services:
     memswap_limit: 1g
     cpu_count: 1
     cpu_percent: 50
+    logging:
+      options:
+        max-size: 50m
 
   filebeat:
     restart: unless-stopped
@@ -79,13 +85,16 @@ services:
       LOGSTASH_HOST: ${LOGSTASH_HOST:-logstash}
       LOGSTASH_PORT: ${LOGSTASH_PORT:-5044}
     volumes:
-     - "./conf/filebeat/filebeat.yml:/filebeat.yml:rw"
-     - './data/filebeat/:/data/:rw'
-     - './certs/:/host/certs/'
-     - '/etc/:/host/etc/:ro'
-     - '/var/:/host/var/:ro'
-     - '/srv/nginx-reverse-proxy/logs/:/host/srv/nginx-reverse-proxy/logs/:ro'
+      - "./conf/filebeat/filebeat.yml:/filebeat.yml:rw"
+      - "./data/filebeat/:/data/:rw"
+      - "./certs/:/host/certs/"
+      - "/etc/:/host/etc/:ro"
+      - "/var/:/host/var/:ro"
+      - "/srv/nginx-reverse-proxy/logs/:/host/srv/nginx-reverse-proxy/logs/:ro"
     mem_limit: 500m
     memswap_limit: 1g
     cpu_count: 1
     cpu_percent: 50
+    logging:
+      options:
+        max-size: 50m
